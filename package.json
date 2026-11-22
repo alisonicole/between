@@ -1,0 +1,36 @@
+{
+  "name": "between",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "set-permissions": "node scripts/set-permissions.mjs"
+  },
+  "dependencies": {
+    "@fontsource/crimson-pro": "^5.3.0",
+    "@fontsource/work-sans": "^5.3.0",
+    "@react-oauth/google": "^0.13.5",
+    "crypto-js": "^4.2.0",
+    "jose": "^6.2.0",
+    "lucide-react": "^0.577.0",
+    "next": "14.2.35",
+    "parse": "^3.5.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^20",
+    "@types/parse": "^3.0.9",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5",
+    "vitest": "^4.1.7"
+  }
+}

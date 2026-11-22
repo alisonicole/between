@@ -1,0 +1,196 @@
+/* Between 1.0 design tokens, taken from the inline styles in between-app's App.jsx (commit 202c44c).
+   Breakpoint: 640px. Do not port 1.0's index.css/App.css (leftover Vite dark theme). */
+
+:root {
+  --bg: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #fce7f3 100%);
+  --heading: #581c87;
+  --secondary: #7c3aed;
+  --bullet: #8b5cf6;
+  --primary: #9333ea;
+  --muted: #6b7280;
+  --input-border: #e9d5ff;
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: 1px solid rgba(255, 255, 255, 0.8);
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  --primary-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  --disabled: #d1d5db;
+  --danger: #ef4444;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+  --font-serif: "Crimson Pro", serif;
+  --font-sans: "Work Sans", sans-serif;
+}
+
+* { box-sizing: border-box; font-family: var(--font-sans); }
+html, body { margin: 0; padding: 0; min-height: 100%; }
+body { background: #faf5ff; color: var(--heading); }
+/* A fixed layer instead of background-attachment: fixed, which iOS Safari ignores. */
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--bg); }
+h1, h2, h3, .serif { font-family: var(--font-serif); }
+h1, h2, h3, h4, p { margin: 0; }
+button { font: inherit; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* ---- Layout ---------------------------------------------------------- */
+.page { min-height: 100vh; padding: 24px; }
+.container { max-width: 1024px; margin: 0 auto; }
+.stack { display: flex; flex-direction: column; gap: 24px; }
+.stack-sm { display: flex; flex-direction: column; gap: 16px; }
+
+/* ---- Header ---------------------------------------------------------- */
+.header { text-align: center; margin-bottom: 32px; }
+.header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.header-side { flex: 1; display: flex; justify-content: flex-end; }
+.wordmark { font-size: 48px; font-weight: 300; color: var(--heading); }
+.tagline { color: var(--secondary); font-size: 16px; }
+.logout {
+  background: none; border: none; color: var(--secondary); cursor: pointer; padding: 8px;
+  display: flex; align-items: center; gap: 4px; font-size: 14px;
+}
+
+/* ---- Main tabs ------------------------------------------------------- */
+.tabs { display: flex; flex-direction: row; gap: 16px; margin-bottom: 24px; }
+.tab {
+  flex: 1; padding: 12px 20px; border-radius: 16px; font-weight: 500; font-size: 16px;
+  border: none; cursor: pointer; transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.4); color: var(--secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tab.active {
+  border: var(--card-border); background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  color: var(--heading); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ---- Sub tabs (Journal Entry / Archive) ------------------------------ */
+.subtabs { display: flex; gap: 12px; }
+.subtab {
+  flex: 1; padding: 8px 16px; border-radius: 12px; font-weight: 500; font-size: 14px;
+  border: none; cursor: pointer; transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.6); color: var(--secondary);
+}
+.subtab.active { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(147, 51, 234, 0.3); }
+
+/* ---- Cards ----------------------------------------------------------- */
+.card {
+  background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: var(--card-border); border-radius: 24px; padding: 32px; box-shadow: var(--card-shadow);
+}
+.card.center { padding: 48px; text-align: center; }
+/* 1.0 kept the browser's default top margin on card headings; match it. */
+.card-title { font-size: 24px; font-weight: 300; color: var(--heading); margin-top: 1em; margin-bottom: 16px; }
+h2.card-title { margin-top: 0.83em; }
+.archive-body .h4 { margin-top: 1.33em; }
+.starter-card {
+  background: linear-gradient(to right, #e9d5ff, #ddd6fe); border-radius: 24px; padding: 32px;
+  box-shadow: var(--card-shadow); border: 1px solid #c4b5fd;
+}
+.big-icon { display: block; margin: 0 auto 16px; }
+
+/* ---- Text ------------------------------------------------------------ */
+.h4 { font-weight: 600; color: var(--heading); font-size: 14px; margin-bottom: 8px; }
+.body { color: var(--secondary); white-space: pre-wrap; }
+.body-dark { color: var(--heading); white-space: pre-wrap; }
+.muted { color: var(--secondary); font-size: 14px; }
+.small-note { color: var(--muted); font-size: 12px; }
+
+/* ---- Forms ----------------------------------------------------------- */
+.label {
+  display: flex; align-items: center; gap: 8px; color: var(--secondary);
+  margin-bottom: 8px; font-weight: 500; font-size: 14px;
+}
+.input, .textarea {
+  width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid var(--input-border);
+  outline: none; font-size: 16px; background: var(--input-bg); color: var(--heading); display: block;
+}
+.input.title { font-weight: 500; }
+.textarea { resize: none; }
+.input:focus, .textarea:focus { border-color: #c4b5fd; }
+
+/* ---- Buttons --------------------------------------------------------- */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px;
+  border-radius: 12px; border: none; font-weight: 500; font-size: 16px; cursor: pointer;
+  transition: all 0.2s; background: var(--primary); color: white; width: 100%;
+}
+.btn.shadow { box-shadow: var(--primary-shadow); }
+.btn.inline { display: inline-flex; width: auto; padding: 16px 32px; box-shadow: var(--primary-shadow); }
+.btn.archive { background: var(--secondary); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+.btn:disabled { background: var(--disabled); opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.7); color: var(--secondary); border: 1px solid var(--input-border);
+  font-weight: 500; font-size: 14px; padding: 8px 16px; border-radius: 12px; cursor: pointer; flex: 1;
+}
+.btn-small { flex: 1; padding: 8px 16px; font-size: 14px; }
+.link-btn {
+  background: none; border: none; color: var(--secondary); font-size: 12px; font-weight: 500;
+  cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 4px 8px;
+}
+.link-btn.underline { text-decoration: underline; padding: 0; display: inline; font-size: inherit; }
+.icon-btn { background: none; border: none; color: var(--secondary); cursor: pointer; padding: 4px; display: flex; }
+.icon-btn.danger { color: var(--danger); }
+
+/* ---- Archive --------------------------------------------------------- */
+.archive-item { background: rgba(255, 255, 255, 0.6); border-radius: 16px; border: 1px solid var(--input-border); overflow: hidden; }
+.archive-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; }
+.archive-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.archive-body { padding: 16px; padding-top: 0; border-top: 1px solid var(--input-border); }
+.archive-date { font-weight: 500; color: var(--heading); font-size: 16px; }
+.archive-preview { font-size: 14px; color: var(--secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip {
+  width: 80px; height: 36px; padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center; text-align: center; flex-shrink: 0;
+  line-height: 1.2; white-space: pre-line;
+}
+.chip.entry { background: #dbeafe; color: #1e40af; }
+.chip.snap { background: #ede9fe; color: #5b21b6; }
+
+/* ---- Lists ----------------------------------------------------------- */
+.bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.bullets li { display: flex; align-items: flex-start; gap: 12px; color: var(--secondary); font-size: 16px; }
+.bullets li::before { content: "•"; color: var(--bullet); }
+
+/* ---- Messages -------------------------------------------------------- */
+.error-banner {
+  padding: 12px; border-radius: 8px; background: var(--error-bg); color: var(--error-text); font-size: 14px;
+  display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+}
+.error-banner button { background: none; border: none; color: var(--error-text); cursor: pointer; font-size: 16px; line-height: 1; }
+.info-banner {
+  padding: 12px 16px; border-radius: 12px; background: #ede9fe; color: #5b21b6; font-size: 14px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.lock-note { margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 12px; }
+
+/* ---- Sign-in --------------------------------------------------------- */
+.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.auth-wrap { width: 100%; max-width: 400px; }
+.auth-head { text-align: center; margin-bottom: 32px; }
+.google-wrap { display: flex; justify-content: center; }
+
+/* ---- Mobile (1.0's 640px breakpoint) ---------------------------------- */
+.desktop-only { display: inline; }
+@media (max-width: 640px) {
+  .page { padding: 16px; }
+  .header { margin-bottom: 24px; }
+  .wordmark { font-size: 36px; }
+  .tagline { font-size: 14px; }
+  .tabs { flex-direction: column; gap: 8px; }
+  .tab { padding: 10px 16px; font-size: 14px; }
+  /* 1.0 shrank only these cards on mobile: Archive, Journal Entry, Session Date. */
+  .card.compact { padding: 20px; }
+  .card.compact .card-title { font-size: 20px; }
+  .stack.capture { gap: 16px; }
+  .archive-row, .archive-body { padding: 12px; }
+  .archive-body { padding-top: 0; }
+  .archive-left { gap: 8px; }
+  .archive-date { font-size: 14px; }
+  .archive-preview { font-size: 12px; }
+  .chip { width: 65px; font-size: 10px; }
+  .body, .body-dark { font-size: 14px; }
+  .desktop-only { display: none; }
+  input, textarea, button { font-size: 16px !important; }
+}
