@@ -1,5 +1,5 @@
 // Locks Between's classes so each user can only read and change their own rows,
-// enforced by the server (Back4App), not just the app. Run once:
+// enforced by the server (Back4App), not just the app. Run once, and again after an update that adds a class:
 //   PARSE_MASTER_KEY=... NEXT_PUBLIC_PARSE_APP_ID=... NEXT_PUBLIC_PARSE_SERVER_URL=... npm run set-permissions
 // Add --dry-run to print what would change.
 const SERVER = (process.env.NEXT_PUBLIC_PARSE_SERVER_URL || "").replace(/\/$/, "");
@@ -29,18 +29,10 @@ const OWNER_ONLY = {
 const CLASSES = {
   Entry: {},
   SessionSnapshot: {},
-  // New in 2.0: the saved prep, so Patterns and the Session Starter survive a reload.
-  SessionPrep: {
+  // New in 2.0: one private record per person (settings, prep, greenhouse, safety plan).
+  // Other fields are added automatically the first time the app saves them.
+  UserState: {
     user: { type: "Pointer", targetClass: "_User" },
-    themes: { type: "Array" },
-    avoiding: { type: "Array" },
-    questions: { type: "Array" },
-    openingStatement: { type: "String" },
-    sessionDate: { type: "String" },
-    notes: { type: "String" },
-    nextSteps: { type: "String" },
-    generatedAt: { type: "String" },
-    placeholder: { type: "Boolean" },
   },
 };
 

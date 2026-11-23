@@ -1,17 +1,17 @@
 "use client";
 
 import Parse from "./parse";
+import type { AIFunction } from "./aiFunctions";
 
-/** Asks the server to generate and save Patterns or a new Session Starter. */
-export async function requestAI(mode: "patterns" | "starter", sessionDate?: string): Promise<void> {
+/** Calls a Between AI function through the server, which checks sign-in and the AI opt-in. */
+export async function callAI<T = any>(fn: AIFunction, params: Record<string, unknown>): Promise<T> {
   const token = Parse.User.current()?.getSessionToken();
-  const res = await fetch("/api/patterns", {
+  const res = await fetch(`/api/ai/${fn}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-parse-session-token": token ?? "" },
-    body: JSON.stringify({ mode, sessionDate }),
+    body: JSON.stringify(params),
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || "Something went wrong. Please try again.");
-  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+  return data.result as T;
 }

@@ -1,21 +1,13 @@
 import type { Entry, Snapshot } from "./types";
 
-export const STARTER_PREFIX = "I think what I'd like to talk about today is";
-
-export type ArchiveItem =
+export type LogItem =
   | { id: string; type: "entry"; data: Entry; date: string; ts: string }
   | { id: string; type: "snap"; data: Snapshot; date: string; ts: string };
 
-/** One list of entries and snapshots, newest first (same order as 1.0). */
-export function combineArchive(entries: Entry[], snapshots: Snapshot[]): ArchiveItem[] {
-  const items: ArchiveItem[] = [
-    ...entries.map((e) => ({
-      id: `e-${e.parseId || e.id}`,
-      type: "entry" as const,
-      data: e,
-      date: e.date,
-      ts: e.timestamp,
-    })),
+/** Journal log: entries and session snapshots in one list, newest first (my-mvp's `combined`). */
+export function combineLog(entries: Entry[], snapshots: Snapshot[]): LogItem[] {
+  const items: LogItem[] = [
+    ...entries.map((e) => ({ id: `e-${e.parseId || e.id}`, type: "entry" as const, data: e, date: e.date, ts: e.timestamp })),
     ...snapshots.map((s) => ({
       id: `s-${s.parseId || s.id}`,
       type: "snap" as const,
@@ -28,15 +20,8 @@ export function combineArchive(entries: Entry[], snapshots: Snapshot[]): Archive
   return items.sort((a, b) => t(b.date) - t(a.date) || t(b.ts) - t(a.ts));
 }
 
-/** The one-line preview under the date in an Archive row. */
-export function archivePreview(item: ArchiveItem): string {
-  if (item.data.locked) return "Locked entry from the old app";
-  if (item.type === "entry") {
-    return item.data.title || (item.data.text || "").substring(0, 60) + "...";
-  }
-  const s = item.data;
-  const starter = (s.openingStatement || "")
-    .replace(new RegExp(`^${STARTER_PREFIX}\\s*`, "i"), "")
-    .replace(/\.$/, "");
-  return starter || s.intention || s.prepNote || "";
+/** The line under an entry's date. Locked entries never show ciphertext. */
+export function entryPreview(e: Entry): string {
+  if (e.locked) return "Locked entry from the old app";
+  return (e.text || "").substring(0, 60) + "...";
 }

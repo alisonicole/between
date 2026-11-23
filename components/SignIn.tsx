@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { lookupGoogleAccount, signInWithGoogle } from "@/lib/auth";
 import type { LookupState } from "@/lib/accountLookup";
 import { LegacyUnlock } from "./LegacyUnlock";
+import { Logo } from "./Logo";
 
 export function SignIn({ onSignedIn }: { onSignedIn: () => void }) {
   const [error, setError] = useState("");
@@ -38,12 +39,11 @@ export function SignIn({ onSignedIn }: { onSignedIn: () => void }) {
   return (
     <div className="auth-page">
       <div className="auth-wrap">
-        <div className="auth-head">
-          <h1 className="wordmark" style={{ marginBottom: 8 }}>between</h1>
-          <p className="tagline">Capture what comes up between sessions and bring it into the room</p>
-        </div>
-
         <div className="card">
+          <div className="auth-head">
+            <Logo />
+            <p className="tagline">Capture what comes up between sessions and bring it into the room</p>
+          </div>
           {legacy ? (
             <LegacyUnlock
               credential={legacy.credential}
